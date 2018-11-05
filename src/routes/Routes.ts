@@ -1,8 +1,9 @@
 import { Application, Response } from 'express'
+import PetController from '../controllers/PetController'
 import PetTypeController from '../controllers/PetTypeController'
 
 export default class Routes {
-  
+  public petController: PetController = new PetController()
   public petTypeController: PetTypeController = new PetTypeController()
 
   public routes(app: Application): void {
@@ -13,6 +14,15 @@ export default class Routes {
         })
       )
 
+    app.route('/pets')
+      .get(this.petController.index)
+      .post(this.petController.create)
+
+    app.route('/pets/:petId')
+      .get(this.petController.show)
+      .put(this.petController.update)
+      .delete(this.petController.destroy)
+      
     app.route('/pet_types')
       .get(this.petTypeController.index)
       .post(this.petTypeController.create)
